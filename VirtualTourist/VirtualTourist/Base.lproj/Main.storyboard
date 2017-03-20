@@ -48,6 +48,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Y5n-mE-vgW"/>
+                    <connections>
+                        <outlet property="mapView" destination="Eu4-PC-91j" id="ALJ-7T-l8e"/>
+                        <outlet property="removePinLabel" destination="jhH-Jz-WWr" id="NhK-Ca-WHq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
