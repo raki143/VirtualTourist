@@ -28,6 +28,9 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
         title = "Virtual Tourist"
         self.navigationItem.rightBarButtonItem = editButtonItem
         
+        // hide removePinLabel
+        removePinLabel.isHidden = true
+        
         // add long press gesture recognizer
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(addPinToMap(gesture:)))
         longPressGesture.minimumPressDuration = 1.0
@@ -72,7 +75,7 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
             annotation?.coordinate = coordinates
         case .ended:
             // call request manager api to request images at pin
-            return
+            print("request images at pin location.")
             
         default:
             return
@@ -101,7 +104,6 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             
-            
         }else{
             pinView?.annotation = annotation
         }
@@ -110,6 +112,25 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
+        mapView.deselectAnnotation(view.annotation, animated: true)
+        
+        if self.isEditing{
+            
+            // Remove corresponding Pin.
+            let annotation = view.annotation as! PinAnnotation
+            mapView.removeAnnotation(annotation)
+            
+            if let selectedPin = annotation.pin{
+                stack.context.delete(selectedPin)
+                stack.save()
+            }
+            
+            mapView.layoutIfNeeded()
+            
+        }else{
+            
+            print("Navigate to album view controller and show albums.")
+        }
     }
     
     
