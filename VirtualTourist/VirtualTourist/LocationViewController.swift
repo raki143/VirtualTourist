@@ -18,8 +18,7 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
     
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     
-    var pin: Pin? = nil
-    var annotation: PinAnnotation? = nil
+   
     
     override func viewDidLoad() {
         
@@ -60,27 +59,38 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
     func addPinToMap(gesture:UILongPressGestureRecognizer){
         
         
+        
         let locationInMap = gesture.location(in: mapView)
         let coordinates : CLLocationCoordinate2D = mapView.convert(locationInMap, toCoordinateFrom: mapView)
         
         switch gesture.state{
-        case .began:
-            pin = Pin(latitude: coordinates.latitude, longitude: coordinates.longitude, context: stack.context)
-            annotation = PinAnnotation()
-            annotation?.pin = pin
-            annotation?.coordinate = pin!.coordinate
-            mapView.addAnnotation(annotation!)
-        case .changed:
-            pin?.coordinate = coordinates
-            annotation?.coordinate = coordinates
-        case .ended:
-            // call request manager api to request images at pin
-            print("request images at pin location.")
             
+        case .began:
+           let pin = Pin(latitude: coordinates.latitude, longitude: coordinates.longitude, context: stack.context)
+           let annotation = PinAnnotation()
+            annotation.pin = pin
+            annotation.coordinate = pin.coordinate
+            mapView.addAnnotation(annotation)
+            
+            print("request images at pin location.")
+           
+                
+                RequestManager.getImagesAtPin(pin: pin, completionHandler: { (result, error) in
+                    
+                    if result{
+                        print("Navigate to album view controller and show albums.")
+                    }else{
+                        print("failed to get images at location pin")
+                    }
+                })
+                
+            stack.save()
+
         default:
             return
         }
-        stack.save()
+        
+        
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {

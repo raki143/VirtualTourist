@@ -22,6 +22,7 @@
 		7E76B4711E7E1B8700A00055 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E76B4701E7E1B8700A00055 /* Constants.swift */; };
 		7E76B4731E7E1D0C00A00055 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E76B4721E7E1D0C00A00055 /* RequestManager.swift */; };
 		7E76B4751E7E200B00A00055 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E76B4741E7E200B00A00055 /* CoreDataStack.swift */; };
+		7E76B4771E816EDA00A00055 /* VirtualTouristError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E76B4761E816EDA00A00055 /* VirtualTouristError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		7E76B4701E7E1B8700A00055 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7E76B4721E7E1D0C00A00055 /* RequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		7E76B4741E7E200B00A00055 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = VirtualTourist/CoreDataStack.swift; sourceTree = "<group>"; };
+		7E76B4761E816EDA00A00055 /* VirtualTouristError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualTouristError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				14AFFB891E7FDE55007F9A18 /* CoreData */,
 				7E76B4701E7E1B8700A00055 /* Constants.swift */,
 				7E76B4721E7E1D0C00A00055 /* RequestManager.swift */,
+				7E76B4761E816EDA00A00055 /* VirtualTouristError.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				14AFFB901E7FF558007F9A18 /* PinAnnotation.swift in Sources */,
 				7E76B46F1E7D261B00A00055 /* Photo+CoreDataProperties.swift in Sources */,
 				7E76B46E1E7D261B00A00055 /* Photo+CoreDataClass.swift in Sources */,
+				7E76B4771E816EDA00A00055 /* VirtualTouristError.swift in Sources */,
 				7E76B4671E7D0A0300A00055 /* VirtualTouristModel.xcdatamodeld in Sources */,
 				7E76B46C1E7D261B00A00055 /* Pin+CoreDataClass.swift in Sources */,
 				7E76B4751E7E200B00A00055 /* CoreDataStack.swift in Sources */,
