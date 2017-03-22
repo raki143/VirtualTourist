@@ -18,7 +18,7 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
     
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     
-   
+    
     
     override func viewDidLoad() {
         
@@ -66,26 +66,27 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
         switch gesture.state{
             
         case .began:
-           let pin = Pin(latitude: coordinates.latitude, longitude: coordinates.longitude, context: stack.context)
-           let annotation = PinAnnotation()
+            
+            let pin = Pin(latitude: coordinates.latitude, longitude: coordinates.longitude, context: stack.context)
+            let annotation = PinAnnotation()
             annotation.pin = pin
             annotation.coordinate = pin.coordinate
             mapView.addAnnotation(annotation)
             
             print("request images at pin location.")
-           
+            
+            
+            RequestManager.getImagesAtPin(pin: pin, completionHandler: { (result, error) in
                 
-                RequestManager.getImagesAtPin(pin: pin, completionHandler: { (result, error) in
-                    
-                    if result{
-                        print("Navigate to album view controller and show albums.")
-                    }else{
-                        print("failed to get images at location pin")
-                    }
-                })
-                
+                if result{
+                    print("Navigate to album view controller and show albums.")
+                }else{
+                    print("failed to get images at location pin")
+                }
+            })
+            
             stack.save()
-
+            
         default:
             return
         }

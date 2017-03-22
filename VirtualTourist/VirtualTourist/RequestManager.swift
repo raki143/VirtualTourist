@@ -78,26 +78,30 @@ struct RequestManager{
                     }
                     
                     
-                    
-                    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
-                    
-                    stack.performBackgroundBatchOperation({ (workerContext) in
+                    DispatchQueue.main.async(execute: {
+                        
+                        
+                        let stack = (UIApplication.shared.delegate as! AppDelegate).stack
                         
                         for photoDictionary in photosArray {
                             
                             if let id = photoDictionary[FlickrResponseKeys.ID] as? String, let idDouble = Double(id), let photoURL = photoDictionary[FlickrResponseKeys.MediumURL] as? String {
                                 
                                 let idNumber = NSNumber(value: idDouble)
-                                let photo = Photo(id: idNumber, url: photoURL, context: workerContext)
-                                photo.pin = Pin(latitude: pin.latitude, longitude: pin.longitude, context: workerContext)
+                                let photo = Photo(id: idNumber, url: photoURL, context: stack.context)
+                                photo.pin = pin
                                 
-                                
+                                print("***********************************************************************************")
+                                print("\(photo.id) - \(photo.url)")
+                                print("-----------------------------------------------------------------------------------")
+                                print("\(photo.pin?.latitude) - \(photo.pin?.longitude)")
                             }
                         }
+                        stack.save()
                         completionHandler(true,virtualTouristError.noError)
                         
+                        
                     })
-                    
                     
                     
                 }
