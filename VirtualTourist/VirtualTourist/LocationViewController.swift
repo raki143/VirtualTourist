@@ -76,14 +76,21 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
             print("request images at pin location.")
             
             
-            RequestManager.getImagesAtPin(pin: pin, completionHandler: { (result, error) in
-                
-                if result{
-                    print("Navigate to album view controller and show albums.")
-                }else{
-                    print("failed to get images at location pin")
-                }
-            })
+            
+            // calling network request other than main thread.
+            DispatchQueue.global().async {
+               
+                RequestManager.getImagesAtPin(pin: pin, completionHandler: { (result, error) in
+                   
+                    if result{
+                        print("Navigate to album view controller and show albums.")
+                    }else{
+                        print("failed to get images at location pin")
+                    }
+                    
+                })
+            }
+            
             
             stack.save()
             
