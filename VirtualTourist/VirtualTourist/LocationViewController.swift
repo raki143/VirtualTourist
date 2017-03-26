@@ -110,6 +110,7 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
         }
     }
     
+    
     // MARK: - MKMapViewDelegate
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -125,6 +126,7 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
         }else{
             pinView?.annotation = annotation
         }
+        
         return pinView
     }
     
@@ -147,7 +149,10 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
             
         }else{
             
-            print("Navigate to album view controller and show albums.")
+            let annotation = view.annotation as! PinAnnotation
+            let albumVC = storyboard?.instantiateViewController(withIdentifier: "album") as! AlbumViewController
+            albumVC.pin = annotation.pin
+            navigationController?.pushViewController(albumVC, animated: true)
         }
     }
     
