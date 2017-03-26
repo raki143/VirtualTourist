@@ -16,7 +16,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Eu4-PC-91j"/>
@@ -60,12 +60,13 @@
                         <viewControllerLayoutGuide type="bottom" id="Joa-iJ-Cgu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pbC-NJ-vPq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="uMs-LU-rIH">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="uMs-LU-rIH">
+                                <frame key="frameInset" width="375" height="262"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="225" id="qjL-W0-3iN"/>
+                                    <constraint firstAttribute="height" constant="262" id="qhf-Zu-qbx"/>
                                 </constraints>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CV8-ov-rul">
@@ -75,20 +76,21 @@
                                     <barButtonItem systemItem="flexibleSpace" id="z55-Sl-TTv"/>
                                 </items>
                             </toolbar>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IKk-Md-tg3">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IKk-Md-tg3">
+                                <frame key="frameInset" minY="262" width="375" height="361"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aq6-4C-X5t">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="150" height="150"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="9bX-bT-xU5" customClass="imageCollectionViewCell" customModule="VirtualTourist">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </view>
                                     </collectionViewCell>
@@ -97,16 +99,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="uMs-LU-rIH" secondAttribute="trailing" id="3r1-0q-OEE"/>
-                            <constraint firstItem="uMs-LU-rIH" firstAttribute="top" secondItem="pbC-NJ-vPq" secondAttribute="top" id="GpY-Eo-o9f"/>
-                            <constraint firstAttribute="trailing" secondItem="CV8-ov-rul" secondAttribute="trailing" id="M8P-Nx-x7t"/>
-                            <constraint firstItem="CV8-ov-rul" firstAttribute="leading" secondItem="pbC-NJ-vPq" secondAttribute="leading" id="RwP-IT-Fgd"/>
-                            <constraint firstItem="CV8-ov-rul" firstAttribute="top" secondItem="IKk-Md-tg3" secondAttribute="bottom" id="UMe-iR-ZUN"/>
-                            <constraint firstItem="IKk-Md-tg3" firstAttribute="top" secondItem="uMs-LU-rIH" secondAttribute="bottom" id="UQy-oJ-JLj"/>
-                            <constraint firstItem="Joa-iJ-Cgu" firstAttribute="top" secondItem="CV8-ov-rul" secondAttribute="bottom" id="V73-O3-qgO"/>
-                            <constraint firstItem="uMs-LU-rIH" firstAttribute="leading" secondItem="pbC-NJ-vPq" secondAttribute="leading" id="ZSt-VL-PfR"/>
-                            <constraint firstItem="IKk-Md-tg3" firstAttribute="leading" secondItem="pbC-NJ-vPq" secondAttribute="leading" id="cTv-y1-8Hv"/>
-                            <constraint firstAttribute="trailing" secondItem="IKk-Md-tg3" secondAttribute="trailing" id="uk4-ni-qYl"/>
+                            <constraint firstItem="CV8-ov-rul" firstAttribute="top" secondItem="IKk-Md-tg3" secondAttribute="bottom" id="KtO-qi-IQs"/>
+                            <constraint firstItem="CV8-ov-rul" firstAttribute="leading" secondItem="pbC-NJ-vPq" secondAttribute="leading" id="VtU-eD-S1D"/>
+                            <constraint firstItem="IKk-Md-tg3" firstAttribute="leading" secondItem="pbC-NJ-vPq" secondAttribute="leading" id="Zrf-y8-UaG"/>
+                            <constraint firstAttribute="trailing" secondItem="IKk-Md-tg3" secondAttribute="trailing" id="cfM-Cb-MF7"/>
+                            <constraint firstAttribute="trailing" secondItem="uMs-LU-rIH" secondAttribute="trailing" id="eBN-2c-b60"/>
+                            <constraint firstItem="uMs-LU-rIH" firstAttribute="leading" secondItem="pbC-NJ-vPq" secondAttribute="leading" id="fMF-LV-mbh"/>
+                            <constraint firstAttribute="trailing" secondItem="CV8-ov-rul" secondAttribute="trailing" id="hjb-Zi-RGj"/>
+                            <constraint firstItem="Joa-iJ-Cgu" firstAttribute="top" secondItem="CV8-ov-rul" secondAttribute="bottom" id="lhM-ye-rzK"/>
+                            <constraint firstItem="CV8-ov-rul" firstAttribute="top" secondItem="IKk-Md-tg3" secondAttribute="bottom" id="tYd-zz-LIk"/>
+                            <constraint firstItem="IKk-Md-tg3" firstAttribute="top" secondItem="uMs-LU-rIH" secondAttribute="bottom" id="uvA-ET-ecS"/>
+                            <constraint firstItem="uMs-LU-rIH" firstAttribute="top" secondItem="pbC-NJ-vPq" secondAttribute="top" id="zrE-ui-4W4"/>
                         </constraints>
                     </view>
                     <connections>
@@ -117,7 +120,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A92-gD-Qts" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1863.2" y="122.78860569715144"/>
+            <point key="canvasLocation" x="1862.3188405797102" y="122.28260869565219"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5vO-ea-L0A">
