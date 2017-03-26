@@ -9,7 +9,8 @@
 import Foundation
 import UIKit
 
-typealias GetImagesCompletionHandler = (_ result:Bool,_ error:virtualTouristError) -> Void
+typealias GetImagesCompletionHandler = (_ result:Bool,_ error:virtualTouristError?) -> Void
+typealias imageRequestHandler = (_ image:UIImage?,_ error : NSError?) -> Void
 
 struct RequestManager{
     
@@ -98,7 +99,7 @@ struct RequestManager{
                             }
                         }
                         stack.save()
-                        completionHandler(true,virtualTouristError.noError)
+                        completionHandler(true,nil)
                         
                         
                     })
@@ -118,6 +119,30 @@ struct RequestManager{
         task.resume()
         
         
+    }
+    
+    static func getImageAtURL(url:URL,completion: imageRequestHandler?){
+        
+        let task = session.dataTask(with: url) { (data, response, error) in
+            
+           
+            guard let data = data else{
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode , statusCode >= 200 && statusCode <= 299 else{
+                return
+            }
+            
+            let image = UIImage(data: data)
+            
+            if let completion = completion{
+                
+                completion(image,error as NSError?)
+            }
+        }
+
+        task.resume()
     }
     
 }
