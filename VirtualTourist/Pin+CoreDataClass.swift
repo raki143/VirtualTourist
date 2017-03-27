@@ -2,7 +2,7 @@
 //  Pin+CoreDataClass.swift
 //  VirtualTourist
 //
-//  Created by Rakesh Kumar on 18/03/17.
+//  Created by Rakesh on 3/27/17.
 //  Copyright © 2017 Rakesh Kumar. All rights reserved.
 //
 
