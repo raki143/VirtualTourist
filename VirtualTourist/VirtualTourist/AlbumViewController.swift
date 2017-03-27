@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class AlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
@@ -149,6 +150,69 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     func getNewAlbumOrRemoveImages(){
         
         
+        if newCollection.title == CollectionButton.newCollection{
+            
+            pin?.currentPage += 1
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+            fetchRequest.predicate = NSPredicate(format: "pin == %@", pin!)
+            let deletePhotosRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            
+            do{
+                try stack.context.execute(deletePhotosRequest)
+            }catch let error as NSError {
+                print("Unable to delete photos : \(error.localizedDescription)")
+            }
+            
+            pin?.photos = []
+            stack.save()
+            
+            DispatchQueue.global().async {
+                RequestManager.getImagesAtPin(pin: self.pin!, completionHandler: { (result, error) in
+                    if result {
+                        print("Fetching new collection is successfull.")
+                        DispatchQueue.main.async(execute: {
+                            self.collectionView.reloadData()
+                        })
+                    }
+                })
+            }
+            
+        }else if newCollection.title == CollectionButton.removeImages{
+            
+            guard let selectedImagesIndexPath = collectionView.indexPathsForSelectedItems, selectedImagesIndexPath.count > 0 else {
+                return
+            }
+            
+            collectionView.performBatchUpdates({
+                
+                for imageIndexPath in selectedImagesIndexPath{
+                    
+                    if let photo = self.pin?.photos?.allObjects[imageIndexPath.row] as? Photo{
+                         self.stack.context.delete(photo)
+                    }
+                   
+                }
+                
+                self.stack.save()
+                self.collectionView.deleteItems(at: selectedImagesIndexPath)
+                
+            }, completion: { (result) in
+                
+                DispatchQueue.main.async(execute: {
+                    self.newCollection.title = CollectionButton.newCollection
+                })
+            })
+            
+        }
+        
     }
     
 }
+
+
+
+
+
+
+
+
