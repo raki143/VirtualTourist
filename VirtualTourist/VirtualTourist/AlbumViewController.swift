@@ -27,7 +27,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         super.viewDidLoad()
 
         // collection view
-        collectionView.register(UINib.init(nibName: "imageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "imageCell")
+        collectionView.register(UINib.init(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "imageCell")
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -80,7 +80,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - collection view methods
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell : imageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! imageCollectionViewCell
+        let cell : ImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCollectionViewCell
         
         let photo = pin?.photos?.allObjects[indexPath.row] as! Photo
         
@@ -104,7 +104,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
                         
                         DispatchQueue.main.async {
                             
-                            if let imageCell = collectionView.cellForItem(at: indexPath) as? imageCollectionViewCell{
+                            if let imageCell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell{
                                 
                                 imageCell.loadImageCell(loading: false)
                                 imageCell.imageView.image = image
@@ -128,8 +128,26 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         return (pin?.photos?.count)!
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell{
+            if cell.isSelected{
+                newCollection.title = CollectionButton.removeImages
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+        guard let selectedCells = collectionView.indexPathsForSelectedItems, selectedCells.count > 0 else{
+            newCollection.title = CollectionButton.newCollection
+            return
+        }
+    }
+    
     //MARK:- UIBarButton newCollection method
     func getNewAlbumOrRemoveImages(){
+        
         
     }
     

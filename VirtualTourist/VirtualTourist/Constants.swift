@@ -60,3 +60,12 @@ struct FlickrResponseKeys {
 struct FlickrResponseValues {
     static let OKStatus = "ok"
 }
+
+// MARK: Button Title
+struct CollectionButton{
+    static let newCollection = "New Collection"
+    static let removeImages = "Remove Selected Images"
+}
+
+
+
