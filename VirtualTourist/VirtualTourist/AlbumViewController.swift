@@ -19,6 +19,8 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     
     @IBOutlet weak var newCollection: UIBarButtonItem!
     
+    @IBOutlet var noImagesDialogView: UIView!
+    
     var pin : Pin?
     
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
@@ -84,6 +86,9 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         if pin?.totalPages == 0 || pin?.currentPage == pin?.totalPages{
             newCollection.isEnabled = false
         }
+        
+        noImagesDialogView.isHidden = true
+        
     }
     
     // MARK: - collection view methods
@@ -135,6 +140,11 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+        // if pin has no images to show then only display noImagesView
+        if pin?.photos?.count == 0{
+            noImagesDialogView.isHidden = false
+        }
+        
         return (pin?.photos?.count)!
     }
     
@@ -172,6 +182,10 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         if newCollection.title == CollectionButton.newCollection{
             
+            // hide noImagesDialogView
+            noImagesDialogView.isHidden = true
+            
+            // increment current page when lessthan total pages
             if (pin?.currentPage)! < (pin?.totalPages)!{
                 pin?.currentPage += 1
             }
