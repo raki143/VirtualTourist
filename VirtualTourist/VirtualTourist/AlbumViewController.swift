@@ -50,6 +50,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         newCollection.target = self
         newCollection.action = #selector(getNewAlbumOrRemoveImages)
         
+        
         // make a request to getImageAtURL
         DispatchQueue.global().async {
             
@@ -77,6 +78,13 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // if pin has no images to show or current page is last page disable new collection button.
+        if pin?.totalPages == 0 || pin?.currentPage == pin?.totalPages{
+            newCollection.isEnabled = false
+        }
+    }
     
     // MARK: - collection view methods
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -126,14 +134,22 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return (pin?.photos?.count)!
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell{
+            
             if cell.isSelected{
+                
                 newCollection.title = CollectionButton.removeImages
+                // If it is last page change newCollection button state to enable.
+                if pin?.currentPage == pin?.totalPages {
+                    newCollection.isEnabled = true
+                }
+                
             }
         }
     }
@@ -141,6 +157,10 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         guard let selectedCells = collectionView.indexPathsForSelectedItems, selectedCells.count > 0 else{
+            // if all selected items are deselected and pin current page is last page then disable newcollection button
+            if pin?.currentPage == pin?.totalPages {
+                newCollection.isEnabled = false
+            }
             newCollection.title = CollectionButton.newCollection
             return
         }
@@ -152,7 +172,10 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         if newCollection.title == CollectionButton.newCollection{
             
-            pin?.currentPage += 1
+            if (pin?.currentPage)! < (pin?.totalPages)!{
+                pin?.currentPage += 1
+            }
+            
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
             fetchRequest.predicate = NSPredicate(format: "pin == %@", pin!)
             let deletePhotosRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -171,6 +194,10 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
                     if result {
                         print("Fetching new collection is successfull.")
                         DispatchQueue.main.async(execute: {
+                            // new collection button is disabled when current page reaches last page
+                            if self.pin?.currentPage == self.pin?.totalPages{
+                                self.newCollection.isEnabled = false
+                            }
                             self.collectionView.reloadData()
                         })
                     }
@@ -199,6 +226,9 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
             }, completion: { (result) in
                 
                 DispatchQueue.main.async(execute: {
+                    if self.pin?.currentPage == self.pin?.totalPages{
+                        self.newCollection.isEnabled = false
+                    }
                     self.newCollection.title = CollectionButton.newCollection
                 })
             })

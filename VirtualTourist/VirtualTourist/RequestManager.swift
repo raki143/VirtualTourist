@@ -78,6 +78,7 @@ struct RequestManager{
                         return
                     }
                     
+                    pin.totalPages = photosDictionary[FlickrResponseKeys.Pages] as! Int
                     
                     DispatchQueue.main.async(execute: {
                         
