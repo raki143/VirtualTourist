@@ -67,6 +67,8 @@
 		14AFFB891E7FDE55007F9A18 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				146775501E89483A00F27510 /* Pin+CoreDataClass.swift */,
+				146775511E89483A00F27510 /* Pin+CoreDataProperties.swift */,
 				7E76B46A1E7D261B00A00055 /* Photo+CoreDataClass.swift */,
 				7E76B46B1E7D261B00A00055 /* Photo+CoreDataProperties.swift */,
 				7E76B4741E7E200B00A00055 /* CoreDataStack.swift */,
@@ -122,8 +124,6 @@
 		7E76B4471E7D094E00A00055 = {
 			isa = PBXGroup;
 			children = (
-				146775501E89483A00F27510 /* Pin+CoreDataClass.swift */,
-				146775511E89483A00F27510 /* Pin+CoreDataProperties.swift */,
 				7E76B4521E7D094E00A00055 /* VirtualTourist */,
 				7E76B4511E7D094E00A00055 /* Products */,
 				14AFFB911E7FF739007F9A18 /* Frameworks */,

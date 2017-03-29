@@ -11,7 +11,7 @@ import MapKit
 import CoreData
 
 class AlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -28,7 +28,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
+        
         // collection view
         collectionView.register(UINib.init(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "imageCell")
         
@@ -79,7 +79,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         
         // if pin has no images to show or current page is last page disable new collection button.
@@ -98,7 +98,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         let photo = pin?.photos?.allObjects[indexPath.row] as! Photo
         
-        // image Data available 
+        // image Data available
         if let imageData = photo.imageData{
             
             cell.imageView.image = UIImage(data: imageData as Data)
@@ -185,6 +185,9 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
             // hide noImagesDialogView
             noImagesDialogView.isHidden = true
             
+            // disable newCollection button
+            newCollection.isEnabled = false
+            
             // increment current page when lessthan total pages
             if (pin?.currentPage)! < (pin?.totalPages)!{
                 pin?.currentPage += 1
@@ -205,15 +208,23 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
             
             DispatchQueue.global().async {
                 RequestManager.getImagesAtPin(pin: self.pin!, completionHandler: { (result, error) in
-                    if result {
-                        print("Fetching new collection is successfull.")
-                        DispatchQueue.main.async(execute: {
-                            // new collection button is disabled when current page reaches last page
-                            if self.pin?.currentPage == self.pin?.totalPages{
-                                self.newCollection.isEnabled = false
-                            }
-                            self.collectionView.reloadData()
-                        })
+                    
+                    DispatchQueue.main.async {
+                        
+                        // enable newCollection button
+                        self.newCollection.isEnabled = true
+                        
+                        if result {
+                            print("Fetching new collection is successfull.")
+                            
+                                // new collection button is disabled when current page reaches last page
+                                if self.pin?.currentPage == self.pin?.totalPages{
+                                    self.newCollection.isEnabled = false
+                                }
+                                self.collectionView.reloadData()
+                            
+                        }
+                        
                     }
                 })
             }
@@ -229,22 +240,22 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
                 for imageIndexPath in selectedImagesIndexPath{
                     
                     if let photo = self.pin?.photos?.allObjects[imageIndexPath.row] as? Photo{
-                         self.stack.context.delete(photo)
+                        self.stack.context.delete(photo)
                     }
-                   
+                    
                 }
                 
                 self.stack.save()
                 self.collectionView.deleteItems(at: selectedImagesIndexPath)
                 
-            }, completion: { (result) in
-                
-                DispatchQueue.main.async(execute: {
-                    if self.pin?.currentPage == self.pin?.totalPages{
-                        self.newCollection.isEnabled = false
-                    }
-                    self.newCollection.title = CollectionButton.newCollection
-                })
+                }, completion: { (result) in
+                    
+                    DispatchQueue.main.async(execute: {
+                        if self.pin?.currentPage == self.pin?.totalPages{
+                            self.newCollection.isEnabled = false
+                        }
+                        self.newCollection.title = CollectionButton.newCollection
+                    })
             })
             
         }
