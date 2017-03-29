@@ -13,13 +13,13 @@ import CoreData
 class AlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     
-     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet private weak var mapView: MKMapView!
     
-     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionView: UICollectionView!
     
-     @IBOutlet weak var newCollection: UIBarButtonItem!
+    @IBOutlet private weak var newCollection: UIBarButtonItem!
     
-     @IBOutlet var noImagesDialogView: UIView!
+    @IBOutlet private var noImagesDialogView: UIView!
     
     public var pin : Pin?
     
@@ -40,14 +40,14 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
-             width = collectionView.frame.size.width / 1.5
+            width = collectionView.frame.size.width / 1.5
         case .phone:
             width = collectionView.frame.size.width / 2
         default:
-             width = collectionView.frame.size.width / 2
+            width = collectionView.frame.size.width / 2
         }
         
-       
+        
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: width, height: width)
@@ -69,29 +69,6 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         newCollection.action = #selector(getNewAlbumOrRemoveImages)
         
         
-        // make a request to getImageAtURL
-        DispatchQueue.global().async {
-            
-            if let photos = self.pin?.photos?.allObjects as? [Photo]{
-                
-                for photo in photos{
-                    
-                    let url = URL(string: photo.url!)
-                    
-                    RequestManager.getImageAtURL(url:url!, completion: { (image, error) in
-                        
-                        if let image = image {
-                            photo.imageData = UIImagePNGRepresentation(image) as NSData?
-                            
-                            DispatchQueue.main.async {
-                                self.stack.save()
-                                self.collectionView.reloadData()
-                            }
-                        }
-                    })
-                }
-            }
-        }
         
         
     }
@@ -105,6 +82,10 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         noImagesDialogView.isHidden = true
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        stack.save()
     }
     
     // MARK: - collection view methods
@@ -220,7 +201,7 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
             }
             
             pin?.photos = []
-            stack.save()
+            
             
             DispatchQueue.global().async {
                 RequestManager.getImagesAtPin(pin: self.pin!, completionHandler: { (result, error) in
