@@ -53,11 +53,11 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         layout.itemSize = CGSize(width: width, height: width)
         
         // map view
-        let mapSpan = MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
+        let mapSpan = MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
         let centeredRegion = MKCoordinateRegion(center: (pin?.coordinate)!, span: mapSpan)
         mapView.isZoomEnabled = false
-        mapView.isScrollEnabled = false
-        mapView.isUserInteractionEnabled = false
+        mapView.isScrollEnabled = true
+        mapView.isUserInteractionEnabled = true
         mapView.setRegion(centeredRegion, animated: true)
         let annotation = PinAnnotation()
         annotation.pin = pin
