@@ -13,17 +13,17 @@ import CoreData
 class AlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     
-    @IBOutlet weak var mapView: MKMapView!
+     @IBOutlet weak var mapView: MKMapView!
     
-    @IBOutlet weak var collectionView: UICollectionView!
+     @IBOutlet weak var collectionView: UICollectionView!
     
-    @IBOutlet weak var newCollection: UIBarButtonItem!
+     @IBOutlet weak var newCollection: UIBarButtonItem!
     
-    @IBOutlet var noImagesDialogView: UIView!
+     @IBOutlet var noImagesDialogView: UIView!
     
-    var pin : Pin?
+    public var pin : Pin?
     
-    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
+    private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     
     override func viewDidLoad() {
         
@@ -35,6 +35,22 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.allowsMultipleSelection = true
+        
+        let width : CGFloat
+        
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+             width = collectionView.frame.size.width / 1.5
+        case .phone:
+            width = collectionView.frame.size.width / 2
+        default:
+             width = collectionView.frame.size.width / 2
+        }
+        
+       
+        
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSize(width: width, height: width)
         
         // map view
         let mapSpan = MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
@@ -217,11 +233,11 @@ class AlbumViewController: UIViewController, UICollectionViewDataSource, UIColle
                         if result {
                             print("Fetching new collection is successfull.")
                             
-                                // new collection button is disabled when current page reaches last page
-                                if self.pin?.currentPage == self.pin?.totalPages{
-                                    self.newCollection.isEnabled = false
-                                }
-                                self.collectionView.reloadData()
+                            // new collection button is disabled when current page reaches last page
+                            if self.pin?.currentPage == self.pin?.totalPages{
+                                self.newCollection.isEnabled = false
+                            }
+                            self.collectionView.reloadData()
                             
                         }
                         
