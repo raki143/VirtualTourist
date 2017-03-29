@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 typealias GetImagesCompletionHandler = (_ result:Bool,_ error:virtualTouristError?) -> Void
-typealias imageRequestHandler = (_ image:UIImage?,_ error : NSError?) -> Void
+typealias imageRequestHandler = (_ image:UIImage?,_ error : virtualTouristError?) -> Void
 
 struct RequestManager{
     
@@ -122,25 +122,24 @@ struct RequestManager{
         
     }
     
-    static func getImageAtURL(url:URL,completion: imageRequestHandler?){
+    static func getImageAtURL(url:URL,completion: @escaping imageRequestHandler){
         
         let task = session.dataTask(with: url) { (data, response, error) in
             
            
             guard let data = data else{
+                completion(nil,virtualTouristError.errorInFetchImageAtURL)
                 return
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode , statusCode >= 200 && statusCode <= 299 else{
+                completion(nil,virtualTouristError.errorInFetchImageAtURL)
                 return
             }
             
             let image = UIImage(data: data)
+            completion(image,nil)
             
-            if let completion = completion{
-                
-                completion(image,error as NSError?)
-            }
         }
 
         task.resume()

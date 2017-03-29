@@ -9,7 +9,7 @@
 import Foundation
 
 enum virtualTouristError : Error {
-    case noError
+    case errorInFetchImageAtURL
     case noInternetConnection
     case errorInFetchImagesAtPin
     
