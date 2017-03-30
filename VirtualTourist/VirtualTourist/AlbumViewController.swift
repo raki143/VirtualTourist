@@ -95,7 +95,7 @@
             
             // image Data available
             if let imageData = photo.imageData{
-                
+                cell.loadImageCell(loading: false)
                 cell.imageView.image = UIImage(data: imageData as Data)
                 
             }else{
