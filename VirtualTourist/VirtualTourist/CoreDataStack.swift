@@ -110,8 +110,8 @@ extension CoreDataStack {
             // can work
             do {
                 try self.backgroundContext.save()
-            } catch {
-                fatalError("Error while saving backgroundContext: \(error)")
+            } catch let error as NSError{
+                print("Error while saving backgroundContext: \(error.localizedDescription)")
             }
         }
     }
@@ -132,16 +132,16 @@ extension CoreDataStack {
             if self.context.hasChanges {
                 do {
                     try self.context.save()
-                } catch {
-                    fatalError("Error while saving main context: \(error)")
+                } catch let error as NSError{
+                    print("Error while saving main context: \(error.localizedDescription)")
                 }
                 
                 // now we save in the background
                 self.persistingContext.perform() {
                     do {
                         try self.persistingContext.save()
-                    } catch {
-                        fatalError("Error while saving persisting context: \(error)")
+                    } catch let error as NSError{
+                        print("Error while saving persisting context: \(error.localizedDescription)")
                     }
                 }
             }
