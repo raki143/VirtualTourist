@@ -80,13 +80,25 @@ class LocationViewController: UIViewController,MKMapViewDelegate,UIGestureRecogn
             // calling network request other than main thread.
             DispatchQueue.global().async {
                
-                RequestManager.getImagesAtPin(pin: pin, completionHandler: { (result, error) in
+                RequestManager.getImagesAtPin(pin: pin, completionHandler: { (photos, error) in
                    
-                    if result{
-                        print("Navigate to album view controller and show albums.")
-                    }else{
-                        print("failed to get images at location pin")
+                    DispatchQueue.main.async {
+                        
+                        if let photos = photos{
+                            
+                            for photo in photos {
+                                
+                                photo.pin = pin
+                                
+                                print("-----------------------------------------------------------------------------------")
+                                print("\(photo.pin?.latitude) - \(photo.pin?.longitude)")
+                            }
+                            
+                            self.stack.save()
+                            
+                        }
                     }
+                    
                     
                 })
             }

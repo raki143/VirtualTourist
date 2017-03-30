@@ -192,14 +192,15 @@
                 
 
                 DispatchQueue.global().async {
-                    RequestManager.getImagesAtPin(pin: self.pin!, completionHandler: { (result, error) in
+                    RequestManager.getImagesAtPin(pin: self.pin!, completionHandler: { (photos, error) in
                         
                         DispatchQueue.main.async {
                             
                             // enable newCollection button
                             self.newCollection.isEnabled = true
                             
-                            if result {
+                            if let photos = photos {
+                                
                                 print("Fetching new collection is successfull.")
                                 
                                 // Delete photos of pin only when new collection request is successful.
@@ -214,6 +215,19 @@
                                 }
                                 
                                 self.pin?.photos = []
+                                
+                                // map relationship between photo and pin
+                                
+                                for photo in photos {
+                                    
+                                    photo.pin = self.pin
+                                    
+                                    print("-----------------------------------------------------------------------------------")
+                                    print("\(photo.pin?.latitude) - \(photo.pin?.longitude)")
+                                }
+                                
+                                // save context
+                                self.stack.save()
                                 
                                 // new collection button is disabled when current page reaches last page
                                 if self.pin?.currentPage == self.pin?.totalPages{

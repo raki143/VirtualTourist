@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-typealias GetImagesCompletionHandler = (_ result:Bool,_ error:virtualTouristError?) -> Void
+typealias GetImagesCompletionHandler = (_ result:[Photo]?,_ error:virtualTouristError?) -> Void
 typealias imageRequestHandler = (_ image:UIImage?,_ error : virtualTouristError?) -> Void
 
 struct RequestManager{
@@ -37,19 +37,19 @@ struct RequestManager{
             
             guard (error == nil) else{
                 debugPrint("error with your request \(error)")
-                completionHandler(false,virtualTouristError.errorInFetchImagesAtPin)
+                completionHandler(nil,virtualTouristError.errorInFetchImagesAtPin)
                 return
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode , statusCode >= 200 && statusCode <= 299 else{
                 debugPrint("StatusCode is otherthan 2xx")
-                completionHandler(false,virtualTouristError.errorInFetchImagesAtPin)
+                completionHandler(nil,virtualTouristError.errorInFetchImagesAtPin)
                 return
             }
             
             guard let data = data else{
                 debugPrint("NO data received.")
-                completionHandler(false, virtualTouristError.errorInFetchImagesAtPin)
+                completionHandler(nil, virtualTouristError.errorInFetchImagesAtPin)
                 return
             }
             
@@ -61,20 +61,20 @@ struct RequestManager{
                     guard let responseStatus = parsedResult[FlickrResponseKeys.Status] as? String, responseStatus == FlickrResponseValues.OKStatus else {
                         
                         debugPrint("Flickr API returned an error. See error code and message in \(parsedResult)")
-                        completionHandler(false,virtualTouristError.errorInFetchImagesAtPin)
+                        completionHandler(nil,virtualTouristError.errorInFetchImagesAtPin)
                         return
                     }
                     
                     // Is "photos" key in our result?
                     guard let photosDictionary = parsedResult[FlickrResponseKeys.Photos] as? [String:AnyObject] else {
                         debugPrint("Cannot find keys '\(FlickrResponseKeys.Photos)' in \(parsedResult)")
-                        completionHandler(false,virtualTouristError.errorInFetchImagesAtPin)
+                        completionHandler(nil,virtualTouristError.errorInFetchImagesAtPin)
                         return
                     }
                     
                     guard let photosArray = photosDictionary[FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
                         debugPrint("array of photos not available")
-                        completionHandler(false,virtualTouristError.errorInFetchImagesAtPin)
+                        completionHandler(nil,virtualTouristError.errorInFetchImagesAtPin)
                         return
                     }
                     
@@ -85,22 +85,24 @@ struct RequestManager{
                         
                         let stack = (UIApplication.shared.delegate as! AppDelegate).stack
                         
+                        // this photos array propagate in callback
+                        var photos = [Photo]()
+                        
                         for photoDictionary in photosArray {
                             
                             if let id = photoDictionary[FlickrResponseKeys.ID] as? String, let idDouble = Double(id), let photoURL = photoDictionary[FlickrResponseKeys.MediumURL] as? String {
                                 
                                 let idNumber = NSNumber(value: idDouble)
                                 let photo = Photo(id: idNumber, url: photoURL, context: stack.context)
-                                photo.pin = pin
+                                photos.append(photo)
                                 
                                 print("***********************************************************************************")
                                 print("\(photo.id) - \(photo.url)")
-                                print("-----------------------------------------------------------------------------------")
-                                print("\(photo.pin?.latitude) - \(photo.pin?.longitude)")
+                                
                             }
                         }
-                        stack.save()
-                        completionHandler(true,nil)
+                        
+                        completionHandler(photos,nil)
                         
                         
                     })
@@ -111,7 +113,7 @@ struct RequestManager{
             } catch {
                 
                 debugPrint("Could not parse the data as JSON: '\(data)'")
-                completionHandler(false,virtualTouristError.errorInFetchImagesAtPin)
+                completionHandler(nil,virtualTouristError.errorInFetchImagesAtPin)
                 return
             }
             
