@@ -204,26 +204,20 @@
                                 print("Fetching new collection is successfull.")
                                 
                                 // Delete photos of pin only when new collection request is successful.
-                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-                                fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin!)
-                                let deletePhotosRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
                                 
-                                do{
-                                    try self.stack.context.execute(deletePhotosRequest)
-                                }catch let error as NSError {
-                                    print("Unable to delete photos : \(error.localizedDescription)")
+                                for oldPhoto in (self.pin?.photos)!{
+                                    self.stack.context.delete(oldPhoto as! Photo)
                                 }
+                                self.stack.save()
                                 
-                                self.pin?.photos = []
-                                
-                                // map relationship between photo and pin
+                                // map relationship between new photo and pin
                                 
                                 for photo in photos {
                                     
                                     photo.pin = self.pin
                                     
                                     print("-----------------------------------------------------------------------------------")
-                                    print("\(photo.pin?.latitude) - \(photo.pin?.longitude)")
+                                    print("\(String(describing: photo.pin?.latitude)) - \(String(describing: photo.pin?.longitude))")
                                 }
                                 
                                 // save context
